@@ -18,15 +18,36 @@ class AgentInterface(ABC):
 
 
 class RandomAgent(AgentInterface):
-    def choose_next_action(
-        self, last_observation: str, valid_actions: list[str], immediate_reward: int, score: int
-    ) -> str:
-        return random.choice(valid_actions)
+    def __init__(self):
+        self.valid_actions = []
+
+    def show_state(
+        self,
+        chosen_action: str,
+        observation: str,
+        reward: int,
+        score: int,
+        valid_actions: list[str],
+    ) -> None:
+        self.valid_actions = valid_actions
+
+    def choose_next_action(self) -> str:
+        return random.choice(self.valid_actions)
 
 
 class HumanAgent(AgentInterface):
+    def show_state(
+        self,
+        chosen_action: str,
+        observation: str,
+        reward: int,
+        score: int,
+        valid_actions: list[str],
+    ) -> None:
+        pass
+
     def choose_next_action(
-        self, last_observation: str, valid_actions: list[str], immediate_reward: int, score: int
+        self,
     ) -> str:
         return input("Enter your action: ")
 
