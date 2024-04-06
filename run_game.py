@@ -3,7 +3,13 @@ from dotenv import load_dotenv
 from jericho import FrotzEnv
 from termcolor import cprint
 
-from text_agent.agents import AgentInterface, HumanAgent, RandomAgent, RawHistoryAgent
+from text_agent.agents import (
+    AgentInterface,
+    HumanAgent,
+    RandomAgent,
+    RawHistoryAgent,
+    ThinkingAgent,
+)
 
 
 def clean_initial_observation(observation: str) -> str:
@@ -52,6 +58,8 @@ def run(agent_type: str):
         agent = RandomAgent()
     elif agent_type == "raw-history":
         agent = RawHistoryAgent()
+    elif agent_type == "thinking":
+        agent = ThinkingAgent()
     else:
         raise ValueError("Invalid agent type")
 

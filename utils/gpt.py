@@ -41,5 +41,4 @@ class GPTModelManager:
             ],
             response_model=response_model,
         )
-        # extract string response from response object
         return response
