@@ -1,18 +1,19 @@
 from jericho import FrotzEnv
+from termcolor import cprint
 
 
 def run():
     # Create the environment, optionally specifying a random seed
-    # env = FrotzEnv("z-machine-games-master/jericho-game-suite/zork1.z5")
-    env = FrotzEnv("z-machine-games-master/jericho-game-suite/sherlock.z5")
+    env = FrotzEnv("z-machine-games-master/jericho-game-suite/zork1.z5")
+    # env = FrotzEnv("z-machine-games-master/jericho-game-suite/sherlock.z5")
     initial_observation, info = env.reset()
     print(initial_observation)  # Show the initial observation to the user
     done = False
 
     while not done:
         # Get and display valid actions
-        valid_actions = env.get_valid_actions()
-        print(f"Valid Actions: {valid_actions}")
+        valid_actions = env.get_valid_actions(use_parallel=False)
+        cprint(f"Valid Actions: {valid_actions}", "green")
 
         # Take an action from the user input
         user_action = input("Enter your action: ")
@@ -22,10 +23,10 @@ def run():
         observation, reward, done, info = env.step(user_action)
 
         # Show the results to the user
-        print("Observation:", observation)
-        print("Reward:", reward)
-        print("Done:", done)
-        print("Info:", info)
+        cprint(f"Observation: {observation}", "green")
+        cprint(f"Reward: {reward}", "yellow")
+        cprint(f"Done: {done}", "blue")
+        cprint(f"Info: {info}", "magenta")
 
         # Total score and move-count are returned in the info dictionary
         print("Total Score", info["score"], "Moves", info["moves"])
