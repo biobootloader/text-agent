@@ -20,5 +20,6 @@ dependencies = [
     "ruff",
     "pyright",
     "termcolor",
-    "fire"
+    "fire",
+    "instructor"
 ]

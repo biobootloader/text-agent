@@ -9,9 +9,12 @@ from utils.history import History
 
 class AgentInterface(ABC):
     @abstractmethod
-    def choose_next_action(
-        self, last_observation: str, valid_actions: list[str], immediate_reward: int, score: int
-    ) -> str: ...
+    def show_state(
+        chosen_action: str, observation: str, reward: int, score: int, valid_actions: list[str]
+    ) -> None: ...
+
+    @abstractmethod
+    def choose_next_action(self) -> str: ...
 
 
 class RandomAgent(AgentInterface):

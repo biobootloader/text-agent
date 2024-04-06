@@ -16,11 +16,13 @@ Revision 88 / Serial number 840726"""
 def run_with_agent(agent: AgentInterface):
     env = FrotzEnv("z-machine-games-master/jericho-game-suite/zork1.z5")
 
-    reward = 0
     done = False
     observation, info = env.reset()
     observation = clean_initial_observation(observation)
     move_number = 0
+    reward = 0
+    score = 0
+    chosen_action = "start"
 
     while not done:
         move_number += 1
@@ -29,13 +31,15 @@ def run_with_agent(agent: AgentInterface):
         cprint(f"Reward and Score: {reward} {info['score']}", "yellow")
         cprint(f"Observation: {observation}", "green")
         cprint(f"Valid Actions: {valid_actions}", "blue")
-        chosen_action = agent.choose_next_action(observation, valid_actions, reward, info["score"])
+        agent.show_state(chosen_action, observation, reward, score, valid_actions)
+        chosen_action = agent.choose_next_action()
         cprint(f"Agent chose: {chosen_action}", "cyan")
         observation, reward, done, info = env.step(chosen_action)
+        score = info["score"]
 
     cprint(f"Final Observation: {observation}", "green")
-    cprint(f"Final Reward and Score: {reward} {info['score']}", "magenta")
-    print("Game Over! Scored", info["score"], "out of", env.get_max_score())
+    cprint(f"Final Reward and Score: {reward} {score}", "magenta")
+    print("Game Over! Scored", score, "out of", env.get_max_score())
 
 
 def run(agent_type: str):
