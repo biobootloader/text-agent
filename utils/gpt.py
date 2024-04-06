@@ -34,6 +34,7 @@ class GPTModelManager:
         """
         response = self.client.messages.create(
             model=model,
+            max_tokens=100,
             messages=[
                 {"role": "system", "content": self.system_message},
                 {"role": "user", "content": prompt},
