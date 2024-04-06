@@ -8,6 +8,7 @@ from text_agent.agents import (
     HumanAgent,
     RandomAgent,
     RawHistoryAgent,
+    SummaryAgent,
     ThinkingAgent,
 )
 
@@ -60,6 +61,8 @@ def run(agent_type: str):
         agent = RawHistoryAgent()
     elif agent_type == "thinking":
         agent = ThinkingAgent()
+    elif agent_type == "summary":
+        agent = SummaryAgent()
     else:
         raise ValueError("Invalid agent type")
 
