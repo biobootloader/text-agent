@@ -1,5 +1,5 @@
 [tool.ruff]
-line-length = 120
+line-length = 100
 
 [build-system]
 requires = ["hatchling"]
@@ -18,5 +18,7 @@ dependencies = [
     "anthropic",
     "jericho",
     "ruff",
-    "pyright"
+    "pyright",
+    "termcolor",
+    "fire"
 ]

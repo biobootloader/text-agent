@@ -1,38 +1,52 @@
+import fire
 from jericho import FrotzEnv
 from termcolor import cprint
 
+from text_agent.agents import AgentInterface, HumanAgent, RandomAgent, RawHistoryAgent
 
-def run():
-    # Create the environment, optionally specifying a random seed
+
+def clean_initial_observation(observation: str) -> str:
+    strip = """Copyright (c) 1981, 1982, 1983 Infocom, Inc. All rights reserved.
+ZORK is a registered trademark of Infocom, Inc.
+Revision 88 / Serial number 840726"""
+
+    return observation.replace(strip, "").strip()
+
+
+def run_with_agent(agent: AgentInterface):
     env = FrotzEnv("z-machine-games-master/jericho-game-suite/zork1.z5")
-    # env = FrotzEnv("z-machine-games-master/jericho-game-suite/sherlock.z5")
-    initial_observation, info = env.reset()
-    print(initial_observation)  # Show the initial observation to the user
+
+    reward = 0
     done = False
+    observation, info = env.reset()
+    observation = clean_initial_observation(observation)
+    move_number = 0
 
     while not done:
-        # Get and display valid actions
+        move_number += 1
+        cprint(f"Move {move_number}:", "yellow")
         valid_actions = env.get_valid_actions(use_parallel=False)
-        cprint(f"Valid Actions: {valid_actions}", "green")
-
-        # Take an action from the user input
-        user_action = input("Enter your action: ")
-
-        # Take the action in the environment using the step function.
-        # The resulting text-observation, reward, and game-over indicator is returned.
-        observation, reward, done, info = env.step(user_action)
-
-        # Show the results to the user
-        cprint(f"Observation: {observation}", "green")
-        cprint(f"Reward: {reward}", "yellow")
-        cprint(f"Done: {done}", "blue")
-        cprint(f"Info: {info}", "magenta")
-
-        # Total score and move-count are returned in the info dictionary
-        print("Total Score", info["score"], "Moves", info["moves"])
+        chosen_action = agent.choose_next_action(observation, valid_actions, reward, info["score"])
+        observation, reward, done, info = env.step(chosen_action)
 
     print("Game Over! Scored", info["score"], "out of", env.get_max_score())
 
 
+def run(agent_type: str):
+    if agent_type == "human":
+        agent = HumanAgent()
+    elif agent_type == "random":
+        agent = RandomAgent()
+    elif agent_type == "raw-history":
+        agent = RawHistoryAgent()
+    else:
+        raise ValueError("Invalid agent type")
+
+    try:
+        run_with_agent(agent)
+    except KeyboardInterrupt:
+        print("\n\nGame interrupted. Exiting...")
+
+
 if __name__ == "__main__":
-    run()
+    fire.Fire(run)

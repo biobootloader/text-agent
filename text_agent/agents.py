@@ -23,8 +23,7 @@ class HumanAgent(AgentInterface):
         self, last_observation: str, valid_actions: list[str], immediate_reward: int, score: int
     ) -> str:
         cprint(f"Observation: {last_observation}", "green")
-        cprint(f"Reward: {immediate_reward}", "yellow")
-        cprint(f"Score: {score}", "magenta")
+        cprint(f"Reward and Score: {immediate_reward} {score}", "magenta")
         cprint(f"Valid Actions: {valid_actions}", "green")
         return input("Enter your action: ")
 
