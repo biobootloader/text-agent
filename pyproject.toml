@@ -15,7 +15,8 @@ name = "text-agent"
 version = "0.0.1"
 description = "text agent"
 dependencies = [
-    "anthropic"
+    "anthropic",
+    "jericho"
 ]
 
 [project.optional-dependencies]
