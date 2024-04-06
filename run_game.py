@@ -24,11 +24,17 @@ def run_with_agent(agent: AgentInterface):
 
     while not done:
         move_number += 1
-        cprint(f"Move {move_number}:", "yellow")
         valid_actions = env.get_valid_actions(use_parallel=False)
+        cprint(f"Move {move_number}:", "yellow")
+        cprint(f"Reward and Score: {reward} {info['score']}", "yellow")
+        cprint(f"Observation: {observation}", "green")
+        cprint(f"Valid Actions: {valid_actions}", "blue")
         chosen_action = agent.choose_next_action(observation, valid_actions, reward, info["score"])
+        cprint(f"Agent chose: {chosen_action}", "cyan")
         observation, reward, done, info = env.step(chosen_action)
 
+    cprint(f"Final Observation: {observation}", "green")
+    cprint(f"Final Reward and Score: {reward} {info['score']}", "magenta")
     print("Game Over! Scored", info["score"], "out of", env.get_max_score())
 
 
