@@ -1,0 +1,25 @@
+[tool.ruff]
+line-length = 120
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch]
+
+[tool.hatch.build.targets.wheel]
+packages=["text-agent"]
+
+[project]
+name = "text-agent"
+version = "0.0.1"
+description = "text agent"
+dependencies = [
+    "anthropic"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pyright"
+]
