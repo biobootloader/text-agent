@@ -16,11 +16,7 @@ version = "0.0.1"
 description = "text agent"
 dependencies = [
     "anthropic",
-    "jericho"
-]
-
-[project.optional-dependencies]
-dev = [
+    "jericho",
     "ruff",
     "pyright"
 ]
