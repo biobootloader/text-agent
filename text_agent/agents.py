@@ -114,15 +114,15 @@ class ThinkingAgent(AgentInterface):
 
             Example response:
 
-            Thinking: As I've explored east already, I will go west now.
+            ```Thinking: As I've explored east already, I will go west now.
 
-            west
+            west```
 
             Another example response:
 
-            Thinking: I will try to find a key to open the door.
+            ```Thinking: I will try to find a key to open the door.
 
-            open box
+            open box```
             """)
 
         # model = "claude-3-haiku-20240307"
@@ -138,6 +138,7 @@ class ThinkingAgent(AgentInterface):
         )
 
         text = response.content[0].text
+        self.history.update_history_with_string(text)
         cprint(text, "light_blue")
         action = text.splitlines()[-1].strip()
         return action
