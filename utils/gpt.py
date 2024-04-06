@@ -11,7 +11,6 @@ class GPTModelManager:
         :param use_local: Determines whether to use a local model or an OpenAI model.
         """
         self.client = None
-        self.chat = None
         self.initialize_client()
         self.system_message = system_message
 
@@ -27,7 +26,7 @@ class GPTModelManager:
         :param prompt: The prompt to send to the GPT model.
         :return: The response from the GPT model.
         """
-        response = self.chat(
+        response = self.client.messages.create(
             model=model,
             messages=[
                 {"role": "system", "content": self.system_message},
