@@ -98,6 +98,7 @@ class ThinkingAgent(AgentInterface):
     def __init__(self):
         self.history = History(system_message="")
         self.anthropic_client = anthropic.Anthropic()
+        self.last_valid_actions = []
 
     def choose_next_action(self) -> str:
         system = textwrap.dedent("""\
@@ -126,7 +127,8 @@ class ThinkingAgent(AgentInterface):
             """)
 
         # model = "claude-3-haiku-20240307"
-        model = "claude-3-sonnet-20240229"
+        # model = "claude-3-sonnet-20240229"
+        model = "claude-3-opus-20240229"
 
         response = self.anthropic_client.messages.create(
             system=system,
@@ -138,9 +140,18 @@ class ThinkingAgent(AgentInterface):
         )
 
         text = response.content[0].text
+        input_tokens = response.usage.input_tokens
+        output_tokens = response.usage.output_tokens
+        cprint(f"Input and Output tokens: {input_tokens} {output_tokens}", "yellow")
+
         self.history.update_history_with_string(text)
         cprint(text, "light_blue")
         action = text.splitlines()[-1].strip()
+
+        if action not in self.last_valid_actions:
+            cprint(f"Invalid action: {action}", "red")
+            return random.choice(self.last_valid_actions)
+
         return action
 
     def show_state(
@@ -159,3 +170,4 @@ class ThinkingAgent(AgentInterface):
             next_valid_actions=valid_actions,
         )
         self.history.export_history_to_file("history.txt")
+        self.last_valid_actions = valid_actions
