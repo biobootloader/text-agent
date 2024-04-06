@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 
 from termcolor import cprint
 
+from utils.history import History
+from utils.gpt import GPTModelManager
 
 class AgentInterface(ABC):
     @abstractmethod
@@ -30,13 +32,20 @@ class HumanAgent(AgentInterface):
 
 class RawHistoryAgent(AgentInterface):
     def __init__(self):
-        self.history = []
+        self.history = History()
+        self.agent = GPTModelManager(system_message="You are an expert at text-based games. \
+                                     You are trying to play a game, and \
+                                     you are trying to figure out what the next best action should be based on context you are given.")
 
     def choose_next_action(
-        self, last_observation: str, valid_actions: list[str], immediate_reward: int, score: int
+        self, last_observation: str, valid_actions: list[str]
     ) -> str:
-        self.history.append((last_observation, valid_actions, immediate_reward, score))
-        return random.choice(valid_actions)
+        model = "claude-3-sonnet-20240229"
+        next_action = self.agent.get_response(model=model, \
+            prompt=self.history.get_formatted_history_for_next_action(last_observation,valid_actions),
+            response_model=str)
+        return next_action
 
-    def get_history(self):
-        return self.history
+    def update_history(self, last_observation: str, action_taken: str, immediate_reward: int, score: int):
+        self.history.add_to_history(last_observation, action_taken, immediate_reward, score)
+
