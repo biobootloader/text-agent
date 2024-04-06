@@ -61,18 +61,16 @@ class RawHistoryAgent(AgentInterface):
                                      you are trying to figure out what the next best action should be based on context you are given."
         )
 
-    def choose_next_action(self, last_observation: str, valid_actions: list[str]) -> str:
+    def choose_next_action(self) -> str:
         model = "claude-3-sonnet-20240229"
         next_action = self.agent.get_response(
             model=model,
-            prompt=self.history.get_formatted_history_for_next_action(
-                last_observation, valid_actions
-            ),
+            prompt=self.history.get_formatted_history_for_next_action(),
             response_model=str,
         )
         return next_action
 
-    def update_history(
-        self, last_observation: str, action_taken: str, immediate_reward: int, score: int
-    ):
-        self.history.add_to_history(last_observation, action_taken, immediate_reward, score)
+    def show_state(self,
+        chosen_action: str, observation: str, reward: int, score: int, valid_actions: list[str]) -> None:
+        
+        self.history.update_history(action_taken=chosen_action, observation=observation, immediate_reward=reward, score=score, next_valid_actions=valid_actions)
