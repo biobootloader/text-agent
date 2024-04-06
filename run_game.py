@@ -1,4 +1,5 @@
 import fire
+from dotenv import load_dotenv
 from jericho import FrotzEnv
 from termcolor import cprint
 
@@ -43,6 +44,8 @@ def run_with_agent(agent: AgentInterface):
 
 
 def run(agent_type: str):
+    load_dotenv()
+
     if agent_type == "human":
         agent = HumanAgent()
     elif agent_type == "random":

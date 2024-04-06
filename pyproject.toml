@@ -16,6 +16,7 @@ version = "0.0.1"
 description = "text agent"
 dependencies = [
     "anthropic",
+    "python-dotenv",
     "jericho",
     "ruff",
     "pyright",

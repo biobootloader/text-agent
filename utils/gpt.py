@@ -1,11 +1,15 @@
-import instructor
-
-from pydantic import BaseModel
-import anthropic
 import json
 
+import anthropic
+import instructor
+from pydantic import BaseModel
+
+
 class GPTModelManager:
-    def __init__(self, system_message: str = "You're a helpful AI assistant here to navigate game environment you're in."):
+    def __init__(
+        self,
+        system_message: str = "You're a helpful AI assistant here to navigate game environment you're in.",
+    ):
         """
         Initializes a new instance of the GPTModelManager.
         :param use_local: Determines whether to use a local model or an OpenAI model.
@@ -18,9 +22,11 @@ class GPTModelManager:
         """
         Initializes the GPT client based on the configuration.
         """
-        client = instructor.from_anthropic(anthropic.Anthropic())
-    
-    def get_response(self, prompt: str, response_model: BaseModel, model: str = 'claude-3-sonnet-20240229') -> str:
+        self.client = instructor.from_anthropic(anthropic.Anthropic())
+
+    def get_response(
+        self, prompt: str, response_model: BaseModel, model: str = "claude-3-sonnet-20240229"
+    ) -> str:
         """
         Gets a response from the GPT model.
         :param prompt: The prompt to send to the GPT model.
@@ -32,8 +38,7 @@ class GPTModelManager:
                 {"role": "system", "content": self.system_message},
                 {"role": "user", "content": prompt},
             ],
-            response_model=response_model
+            response_model=response_model,
         )
         # extract string response from response object
         return response
-
