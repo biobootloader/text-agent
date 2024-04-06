@@ -70,7 +70,18 @@ class RawHistoryAgent(AgentInterface):
         )
         return next_action
 
-    def show_state(self,
-        chosen_action: str, observation: str, reward: int, score: int, valid_actions: list[str]) -> None:
-        
-        self.history.update_history(action_taken=chosen_action, observation=observation, immediate_reward=reward, score=score, next_valid_actions=valid_actions)
+    def show_state(
+        self,
+        chosen_action: str,
+        observation: str,
+        reward: int,
+        score: int,
+        valid_actions: list[str],
+    ) -> None:
+        self.history.update_history(
+            chosen_action=chosen_action,
+            observation=observation,
+            reward=reward,
+            score=score,
+            next_valid_actions=valid_actions,
+        )
