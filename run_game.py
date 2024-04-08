@@ -10,6 +10,8 @@ from text_agent.agents import (
     RawHistoryAgent,
     SummaryAgent,
     ThinkingAgent,
+    MentalMapAgent,
+    MentalMapAgentB,
 )
 
 
@@ -61,8 +63,10 @@ def run(agent_type: str):
         agent = RawHistoryAgent()
     elif agent_type == "thinking":
         agent = ThinkingAgent()
-    elif agent_type == "summary":
-        agent = SummaryAgent()
+    elif agent_type == "mentalmap":
+        agent = MentalMapAgent()
+    elif agent_type == "agentb":
+        agent = MentalMapAgentB()
     else:
         raise ValueError("Invalid agent type")
 
